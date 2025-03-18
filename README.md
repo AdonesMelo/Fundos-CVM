@@ -9,7 +9,6 @@ Este projeto tem como objetivo fazer o download de um arquivo CSV de fundos de i
   - `requests`
   - `pandas`
   - `pyodbc`
-  - `os`
 
 ## Instalação
 
@@ -40,6 +39,6 @@ Este projeto tem como objetivo fazer o download de um arquivo CSV de fundos de i
 - **download_csv(url, nome_arquivo)**: Faz o download de um arquivo CSV a partir de uma URL e o salva localmente.
 - **tratar_csv(nome_arquivo)**: Lê o arquivo CSV, remove caracteres indesejados da coluna `CNPJ_FUNDO` e remove duplicatas.
 - **conexao_db(server, database, username, password)**: Estabelece conexão com o banco de dados SQL Server.
-- **create_table(cursor)**: Cria a tabela `CREDIREAL` no banco de dados, removendo-a se já existir.
-- **insert_data(cursor, df)**: Insere os dados do DataFrame na tabela `CREDIREAL` em lotes.
-- **main()**: Função principal que executa o download, processamento, conexão com o banco de dados, criação da tabela, inserção dos dados e remoção do arquivo CSV.
+- **create_table(cursor)**: Cria a tabela `FUNDOS` no banco de dados, removendo-a se já existir.
+- **insert_data(cursor, df)**: Insere os dados do DataFrame na tabela `FUNDOS` em lotes.
+- **main()**: Função principal que executa o download, processamento, conexão com o banco de dados, criação da tabela e inserção dos dados 
