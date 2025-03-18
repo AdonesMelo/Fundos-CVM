@@ -1,7 +1,7 @@
 import requests
 import pandas as pd
 import pyodbc
-import os
+
 
 def download_csv(url, nome_arquivo):
     ''' Essa função e responsavel por fazer o download e salva local
@@ -63,7 +63,7 @@ def conexao_db(server, database, username, password):
     return conexao
 
 def create_table(cursor):
-    ''' Essa função é responsal por criar uma tabela CREDIREAL no SQL SERVER e remover se ela existir
+    ''' Essa função é responsal por criar uma tabela FUNDOS no SQL SERVER e remover se ela existir
     
     Inputs: 
     - cursor
@@ -73,8 +73,8 @@ def create_table(cursor):
 
     '''
     criar_tabela_query = '''
-    IF OBJECT_ID('CREDIREAL', 'U') IS NOT NULL DROP TABLE CREDIREAL;
-    CREATE TABLE CREDIREAL (
+    IF OBJECT_ID('FUNDOS', 'U') IS NOT NULL DROP TABLE FUNDOS;
+    CREATE TABLE FUNDOS (
         TP_FUNDO VARCHAR(50),
         CNPJ_FUNDO VARCHAR(14) PRIMARY KEY,
         DENOM_SOCIAL NVARCHAR(MAX),
@@ -122,7 +122,7 @@ def create_table(cursor):
     print('Tabela criada com sucesso!')
 
 def insert_data(cursor, df):
-    ''' Função responsalvél por inserir os dados em lotes de uma dataframe pandas, na tabela CREDIREAL do SQL SERVER
+    ''' Função responsalvél por inserir os dados em lotes de uma dataframe pandas, na tabela FUNDOS do SQL SERVER
     
     Inputs: 
     - cursor
@@ -131,7 +131,7 @@ def insert_data(cursor, df):
     Outputs:
     - Preenche valores nulos
     - Divide lotes de 5000 linhas
-    - Insere os dados em lotes na tabela CREDIREAL
+    - Insere os dados em lotes na tabela FUNDOS
     - Confirma a transação após cada lote ser inserido
     - Exibe uma mensagem de sucesso após cada lote ser inserido e ao final de todas as inclusões
 
@@ -167,7 +167,7 @@ def insert_data(cursor, df):
         ]
 
         cursor.executemany('''
-            INSERT INTO CREDIREAL (TP_FUNDO, CNPJ_FUNDO, DENOM_SOCIAL, DT_REG, DT_CONST, CD_CVM, DT_CANCEL, SIT, DT_INI_SIT, 
+            INSERT INTO FUNDOS (TP_FUNDO, CNPJ_FUNDO, DENOM_SOCIAL, DT_REG, DT_CONST, CD_CVM, DT_CANCEL, SIT, DT_INI_SIT, 
                 DT_INI_ATIV, DT_INI_EXERC, DT_FIM_EXERC, CLASSE, DT_INI_CLASSE, RENTAB_FUNDO, CONDOM, FUNDO_COTAS, FUNDO_EXCLUSIVO, 
                 TRIB_LPRAZO, PUBLICO_ALVO, ENTID_INVEST, TAXA_PERFM, INF_TAXA_PERFM, TAXA_ADM, INF_TAXA_ADM, VL_PATRIM_LIQ, 
                 DT_PATRIM_LIQ, DIRETOR, CNPJ_ADMIN, ADMIN, PF_PJ_GESTOR, CPF_CNPJ_GESTOR, GESTOR, CNPJ_AUDITOR, AUDITOR, 
@@ -187,7 +187,7 @@ def main():
     - Faz o download do arquivo CSV a partir de uma url
     - Ler o arquivo CSV
     - Conecta no banco de dados SQL SERVER
-    - Cria a tabela CREDIREAL no banco de dados
+    - Cria a tabela FUNDOS no banco de dados
     - Insere os dados na tabela
     - Remove o arquivo CSV local após a inclusão dos dados
 
@@ -211,11 +211,6 @@ def main():
         
         cursor.close()
         conexao.close()
-        
-        os.remove(csv_arquivo)
-        print('Arquivo CSV removido com sucesso!')
-    else:
-        print('Falha no download do arquivo CSV.')
 
 if __name__ == '__main__':
     main()
