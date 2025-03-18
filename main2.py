@@ -2,7 +2,6 @@ import requests
 import pandas as pd
 import pyodbc
 
-
 def download_csv(url, nome_arquivo):
     ''' Essa função e responsavel por fazer o download e salva local
     Inputs:
@@ -73,7 +72,13 @@ def create_table(cursor):
 
     '''
     criar_tabela_query = '''
-    IF OBJECT_ID('FUNDOS', 'U') IS NOT NULL DROP TABLE FUNDOS;
+    IF OBJECT_ID('FUNDOS', 'U') IS NOT NULL 
+    BEGIN 
+        TRUNCATE TABLE FUNDOS;
+    END;
+
+    IF OBJECT_ID('FUNDOS', 'U') IS NULL 
+    BEGIN    
     CREATE TABLE FUNDOS (
         TP_FUNDO VARCHAR(50),
         CNPJ_FUNDO VARCHAR(14) PRIMARY KEY,
@@ -116,7 +121,8 @@ def create_table(cursor):
         CONTROLADOR VARCHAR(300),
         INVEST_CEMPR_EXTER CHAR(1),
         CLASSE_ANBIMA VARCHAR(300)
-    );
+        );
+    END;
     '''
     cursor.execute(criar_tabela_query)
     print('Tabela criada com sucesso!')
@@ -193,7 +199,7 @@ def main():
 
     '''
     cvs_url = 'https://dados.cvm.gov.br/dados/FI/CAD/DADOS/cad_fi.csv'
-    csv_arquivo = 'cad_fi.csv'
+    csv_arquivo = 'C:/Solis/oo-Cvm-Fundos/cad_fi.csv'
     
     if download_csv(cvs_url, csv_arquivo) == 200:
         df = tratar_csv(csv_arquivo)
